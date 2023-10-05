@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +10,20 @@ import { OverlayEventDetail } from '@ionic/core/components';
 })
 export class HomePage {
 @ViewChild(IonModal) modal!: IonModal;
+  users: any[] = [] ;
 
   message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
   name: string = "";
+  password: string ="";
+  email: string ="";
+
+  constructor(private userService: UsersService){}
+
+  ngOnInit(): void{
+    this.userService.getUsers().subscribe((resp) =>{
+      this.users = resp.users
+    })
+  }
 
   cancel() {
     this.modal.dismiss(null, 'cancel');
